@@ -33,11 +33,21 @@ def build():
 
     songs_data = []
     
+    # Prepare web/canciones directory
+    web_canciones_dir = os.path.join(WEB_DIR, 'canciones')
+    if os.path.exists(web_canciones_dir):
+        shutil.rmtree(web_canciones_dir)
+    os.makedirs(web_canciones_dir)
+    
     songs = sorted([s for s in os.listdir(CANCIONES_DIR) if os.path.isdir(os.path.join(CANCIONES_DIR, s))])
 
     for song_slug in songs:
         song_path = os.path.join(CANCIONES_DIR, song_slug)
         letra_path = os.path.join(song_path, 'letra.txt')
+        
+        # Prepare dest dir for this song
+        song_dest_dir = os.path.join(web_canciones_dir, song_slug)
+        os.makedirs(song_dest_dir, exist_ok=True)
         
         # Check for audio files
         audios = {}
@@ -45,6 +55,8 @@ def build():
             if f.endswith('.mp3'):
                 voice = os.path.splitext(f)[0]
                 audios[voice] = f"canciones/{song_slug}/{f}"
+                # Copy audio file
+                shutil.copy2(os.path.join(song_path, f), os.path.join(song_dest_dir, f))
 
         metadata, content = parse_letra(letra_path)
         
@@ -61,12 +73,6 @@ def build():
     with open(INDEX_JSON_PATH, 'w', encoding='utf-8') as f:
         json.dump(songs_data, f, ensure_ascii=False, indent=2)
     
-    # Clean up web/canciones (we use source/canciones directly now)
-    web_canciones_dir = os.path.join(WEB_DIR, 'canciones')
-    if os.path.exists(web_canciones_dir):
-        shutil.rmtree(web_canciones_dir)
-        print(f"Removed redundant directory: {web_canciones_dir}")
-
     print(f"Build successful! generated {INDEX_JSON_PATH} with {len(songs_data)} songs.")
 
 if __name__ == "__main__":
