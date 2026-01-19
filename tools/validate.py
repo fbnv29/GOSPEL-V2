@@ -14,14 +14,36 @@ def validate_song(song_slug):
         if not os.path.exists(os.path.join(song_path, f)):
             errors.append(f"Missing '{f}' in {song_slug}")
 
-    # Check metadata in letra.txt
+    # 2. Check metadata format (Frontmatter)
     letra_path = os.path.join(song_path, 'letra.txt')
-    if os.path.exists(letra_path):
+    if not os.path.exists(letra_path):
+        errors.append(f"Missing 'letra.txt' in {song_slug}")
+    else:
         with open(letra_path, 'r', encoding='utf-8') as f:
             content = f.read()
-            for key in REQUIRED_METADATA:
-                if not re.search(rf'{{{key}:.*?}}', content):
-                    errors.append(f"Missing metadata '{{{key}: ...}}' in {song_slug}/letra.txt")
+            
+        if not content.startswith('---'):
+            errors.append(f"'{song_slug}/letra.txt' does not start with '---' (Frontmatter)")
+        else:
+            missing_metadata = []
+            
+            # Extract metadata keys manually from the first block
+            parts = content.split('---', 2)
+            if len(parts) < 3:
+                 errors.append(f"'{song_slug}/letra.txt' has invalid Frontmatter format (missing closing '---')")
+            else:
+                frontmatter = parts[1]
+                found_keys = []
+                for line in frontmatter.split('\n'):
+                    if ':' in line:
+                        found_keys.append(line.split(':', 1)[0].strip())
+                        
+                for req in REQUIRED_METADATA:
+                    if req not in found_keys:
+                        missing_metadata.append(req)
+                        
+                if missing_metadata:
+                    errors.append(f"Missing metadata keys in '{song_slug}/letra.txt': {missing_metadata}")
 
     return errors
 

@@ -10,20 +10,33 @@ def parse_letra(letra_path):
         content = f.read()
     
     metadata = {}
-    # Extract metadata
-    for match in re.finditer(r'{(.*?):(.*?)}', content):
-        key = match.group(1).strip()
-        value = match.group(2).strip()
-        metadata[key] = value
+    body = content
     
-    # Remove metadata lines from content for display (optional, depending on how front-end handles it)
-    # For now, we keep the raw content or just body? 
-    # The instructions say "Validation" validation is done, here we just need to data for the web.
-    # The web likely needs the raw text to parse sections/colors, or pre-parsed.
-    # "Python NO es un servidor... prepara los datos... muestra todo bonito"
-    # Let's provide the raw content payload, and the specific metadata fields for the list.
-    
-    return metadata, content
+    # Parse Frontmatter (--- ... ---)
+    if content.startswith('---'):
+        try:
+            parts = content.split('---', 2)
+            if len(parts) >= 3:
+                frontmatter = parts[1]
+                body = parts[2].strip()
+                
+                # Simple YAML parser (since we don't have pyyaml/python-frontmatter guaranteed)
+                for line in frontmatter.split('\n'):
+                    if ':' in line:
+                        key, value = line.split(':', 1)
+                        metadata[key.strip()] = value.strip().strip('"').strip("'")
+        except Exception as e:
+            print(f"Error parsing frontmatter in {letra_path}: {e}")
+    else:
+        # Fallback to old format (just in case)
+        for match in re.finditer(r'{(.*?):(.*?)}', content):
+            key = match.group(1).strip()
+            value = match.group(2).strip()
+            metadata[key] = value
+        # Remove metadata lines from content? 
+        # For old format logic, but let's assume valid frontmatter mostly.
+
+    return metadata, body
 
 def build():
     print("Starting build process...")

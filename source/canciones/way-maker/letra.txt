@@ -1,7 +1,8 @@
-{title: Way Maker (Aquí Estás)}
-{artist: Sinach}
-{key: B}
-
+---
+title: "Way Maker (Aquí Estás)"
+artist: "Sinach"
+key: "B"
+---
 [VERSO 1]
 <soprano>Aquí estás</soprano>
 Te vemos mover

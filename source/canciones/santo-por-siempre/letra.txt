@@ -1,7 +1,8 @@
-{title: Santo por Siempre}
-{artist: Elevation Worship}
-{key: G}
-
+---
+title: "Santo por Siempre"
+artist: "Elevation Worship"
+key: "G"
+---
 [VERSO]
 Bendito sea <soprano>Tu</soprano> nombre
 Jesús, <tenor>Te adoramos</tenor>

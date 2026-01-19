@@ -12,19 +12,25 @@ Dentro de tu nueva carpeta, crea un archivo llamado **`letra.txt`**.
 Este archivo **debe** comenzar con la información de la canción (metadatos) encerrada en llaves `{}`.
 
 ### Estructura Obligatoria
-Copia y pega esto al inicio de tu archivo `letra.txt`:
+3. Crea un archivo `letra.txt` dentro de esa carpeta.
+4. El contenido debe seguir este formato **EXACTO** (respetando los guiones `---` al principio):
 
 ```text
-{
-  title: Título de la Canción
-  artist: Nombre del Artista
-  key: C (La tonalidad)
-}
+---
+title: "Título de la Canción"
+artist: "Nombre del Artista"
+key: "G"
+---
 
 [VERSO 1]
-Aquí va la letra del verso.
-<soprano>Esta parte la cantan solo sopranos</soprano>
-<todos>¡Aquí cantan todos!</todos>
+<soprano>Letra de soprano</soprano>
+<alto>Letra de alto</alto>
+...
+```
+
+**Nota Importante**: 
+- Las primeras líneas entre `---` son obligatorias (Metadata).
+- El resto es la letra normal con sus etiquetas.
 
 [CORO]
 Letra del coro...

@@ -97,11 +97,13 @@ source/canciones/santo-por-siempre/letra.txt
 
 Estructura obligatoria:
 
-METADATA (arriba del todo):
+METADATA (arriba del todo, encerrada en ---):
 
-{title: Santo por Siempre}
-{artist: Elevation Worship}
-{key: G}
+---
+title: "Santo por Siempre"
+artist: "Elevation Worship"
+key: "G"
+---
 
 SECCIONES (no colorean):
 

@@ -1,7 +1,8 @@
-{title: Digno y Santo}
-{artist: Israel Houghton}
-{key: E}
-
+---
+title: "Digno y Santo"
+artist: "Israel Houghton"
+key: "E"
+---
 [VERSO]
 <soprano>Eres digno y santo</soprano>
 <alto>Digno y santo</alto>
